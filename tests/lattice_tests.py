@@ -9,6 +9,7 @@
 
 import unittest
 
+from life.lattice import InvalidSizeError
 from life.lattice import InvalidSymbolError
 from life.lattice import OutOfBoundsError
 from life.lattice import Lattice
@@ -23,6 +24,16 @@ class LatticeCreationTests(unittest.TestCase):
         lattice = Lattice(4)
         with self.assertRaises(AttributeError):
             lattice.size = 5
+
+    def test_invalid_size_error_is_raised_on_zero_size(self):
+        with self.assertRaises(InvalidSizeError) as cm:
+            Lattice(0)
+        self.assertRegex(str(cm.exception), r"^.*0.*$")
+
+    def test_invalid_size_error_is_raised_on_negative_size(self):
+        with self.assertRaises(InvalidSizeError) as cm:
+            Lattice(-1)
+        self.assertRegex(str(cm.exception), r"^.*-1.*$")
 
 
 class LatticeFromStringCreationTests(unittest.TestCase):
@@ -48,6 +59,22 @@ class LatticeFromStringCreationTests(unittest.TestCase):
             Lattice.from_string("q\n")
         self.assertRegex(str(cm.exception), r"^.*q.*$")
         self.assertRegex(str(cm.exception), r"^.*0.*0.*$")
+
+    def test_creation_fails_when_string_is_empty(self):
+        with self.assertRaises(InvalidSizeError) as cm:
+            Lattice.from_string("")
+
+    def test_creation_fails_on_rows_count_mismatch(self):
+        with self.assertRaises(InvalidSizeError) as cm:
+            Lattice.from_string("x x\n")
+
+    def test_creation_fails_on_columns_count_mismatch(self):
+        with self.assertRaises(InvalidSizeError) as cm:
+            Lattice.from_string(
+                "x x\n"
+                "xxx\n"
+                "xx\n"
+            )
 
 
 class LatticeLivenessTests(unittest.TestCase):

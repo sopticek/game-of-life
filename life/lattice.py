@@ -21,15 +21,28 @@ class InvalidSymbolError(LatticeError):
         super().__init__(msg)
 
 
+class InvalidSizeError(LatticeError):
+    pass
+
+
 class Lattice:
     def __init__(self, size):
+        self._validate_size(size)
         self._size = size
         self._lattice = [[False for _ in range(size)] for _ in range(size)]
 
     @staticmethod
     def from_string(str, dead_symbol=' ', live_symbol='x'):
-        rows = str.split('\n')
+        rows = str.rstrip('\n').split('\n')
         size = len(rows[0])
+
+        rows_count = len(rows)
+        if size != rows_count:
+            raise InvalidSizeError
+        for row in rows:
+            if size != len(row):
+                raise InvalidSizeError
+
         lattice = Lattice(size)
         for y, row in enumerate(rows):
             for x, symbol in enumerate(row):
@@ -71,3 +84,7 @@ class Lattice:
     def _validate_position(self, x, y):
         if not (0 <= x < self.size) or not (0 <= y < self.size):
             raise OutOfBoundsError(x, y)
+
+    def _validate_size(self, size):
+        if size <= 0:
+            raise InvalidSizeError(size)
