@@ -16,6 +16,21 @@ class Lattice:
         self._size = size
         self._lattice = [[False for _ in range(size)] for _ in range(size)]
 
+    @staticmethod
+    def from_string(str, dead_symbol=' ', live_symbol='x'):
+        rows = str.split('\n')
+        size = len(rows[0])
+        lattice = Lattice(size)
+        for y, row in enumerate(rows):
+            for x, cell in enumerate(row):
+                if cell == live_symbol:
+                    lattice.make_live(x, y)
+                elif cell == dead_symbol:
+                    lattice.make_dead(x, y)
+                else:
+                    raise Exception
+        return lattice
+
     @property
     def size(self):
         return self._size

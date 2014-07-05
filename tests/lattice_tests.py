@@ -23,6 +23,23 @@ class LatticeCreationTests(unittest.TestCase):
         with self.assertRaises(AttributeError):
             lattice.size = 5
 
+    def test_create_lattice_from_string(self):
+        lattice = Lattice.from_string(
+            "x x\n"
+            " x \n"
+            "x x\n"
+        )
+        self.assertEqual(lattice.size, 3)
+        self.assertTrue(lattice.is_live(0, 0))
+        self.assertTrue(lattice.is_dead(0, 1))
+        self.assertTrue(lattice.is_live(0, 2))
+        self.assertTrue(lattice.is_dead(1, 0))
+        self.assertTrue(lattice.is_live(1, 1))
+        self.assertTrue(lattice.is_dead(1, 2))
+        self.assertTrue(lattice.is_live(2, 0))
+        self.assertTrue(lattice.is_dead(2, 1))
+        self.assertTrue(lattice.is_live(2, 2))
+
 
 class LatticeLivenessTests(unittest.TestCase):
     def setUp(self):
