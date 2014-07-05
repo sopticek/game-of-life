@@ -9,4 +9,8 @@
 
 class Lattice:
     def __init__(self, size):
-        self.size = size
+        self._size = size
+
+    @property
+    def size(self):
+        return self._size
