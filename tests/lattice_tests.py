@@ -9,6 +9,7 @@
 
 import unittest
 
+from life.lattice import InvalidSymbolError
 from life.lattice import OutOfBoundsError
 from life.lattice import Lattice
 
@@ -23,7 +24,9 @@ class LatticeCreationTests(unittest.TestCase):
         with self.assertRaises(AttributeError):
             lattice.size = 5
 
-    def test_create_lattice_from_string(self):
+
+class LatticeFromStringCreationTests(unittest.TestCase):
+    def test_valid_string(self):
         lattice = Lattice.from_string(
             "x x\n"
             " x \n"
@@ -39,6 +42,12 @@ class LatticeCreationTests(unittest.TestCase):
         self.assertTrue(lattice.is_live(2, 0))
         self.assertTrue(lattice.is_dead(2, 1))
         self.assertTrue(lattice.is_live(2, 2))
+
+    def test_creation_fails_when_string_contains_invalid_symbol(self):
+        with self.assertRaises(InvalidSymbolError) as cm:
+            Lattice.from_string("q\n")
+        self.assertRegex(str(cm.exception), r"^.*q.*$")
+        self.assertRegex(str(cm.exception), r"^.*0.*0.*$")
 
 
 class LatticeLivenessTests(unittest.TestCase):

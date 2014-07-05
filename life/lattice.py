@@ -7,8 +7,18 @@
 
 """Representation of a lattice."""
 
-class OutOfBoundsError(Exception):
+class LatticeError(Exception):
     pass
+
+
+class OutOfBoundsError(LatticeError):
+    pass
+
+
+class InvalidSymbolError(LatticeError):
+    def __init__(self, x, y, symbol):
+        msg = "Invalid symbol '{}' on position ({}, {}).".format(symbol, x, y)
+        super().__init__(msg)
 
 
 class Lattice:
@@ -22,13 +32,13 @@ class Lattice:
         size = len(rows[0])
         lattice = Lattice(size)
         for y, row in enumerate(rows):
-            for x, cell in enumerate(row):
-                if cell == live_symbol:
+            for x, symbol in enumerate(row):
+                if symbol == live_symbol:
                     lattice.make_live(x, y)
-                elif cell == dead_symbol:
+                elif symbol == dead_symbol:
                     lattice.make_dead(x, y)
                 else:
-                    raise Exception
+                    raise InvalidSymbolError(x, y, symbol)
         return lattice
 
     @property
