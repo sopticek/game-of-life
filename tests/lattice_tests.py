@@ -12,7 +12,7 @@ import unittest
 from life.lattice import Lattice
 
 
-class LatticeTests(unittest.TestCase):
+class LatticeCreationTests(unittest.TestCase):
     def test_create_lattice_with_size_and_get_size(self):
         lattice = Lattice(4)
         self.assertEqual(lattice.size, 4)
@@ -21,3 +21,33 @@ class LatticeTests(unittest.TestCase):
         lattice = Lattice(4)
         with self.assertRaises(AttributeError):
             lattice.size = 5
+
+
+class LatticeLivenessTests(unittest.TestCase):
+    def setUp(self):
+        self.lattice = Lattice(4)
+
+    def test_cells_are_dead_by_default(self):
+        for x in range(self.lattice.size):
+            for y in range(self.lattice.size):
+                self.assertTrue(self.lattice.is_dead(x, y),
+                    "x = {}, y = {}".format(x, y))
+
+    def test_cell_is_live_after_make_live(self):
+        self.lattice.make_live(2, 3)
+        self.assertTrue(self.lattice.is_live(2, 3))
+
+    def test_cell_is_dead_after_making_live_cell_dead(self):
+        self.lattice.make_live(2, 3)
+        self.lattice.make_dead(2, 3)
+        self.assertTrue(self.lattice.is_dead(2, 3))
+
+    def test_dead_cell_becomes_live_after_toggle(self):
+        self.lattice.make_dead(1, 2)
+        self.lattice.toggle_liveness(1, 2)
+        self.assertTrue(self.lattice.is_live(1, 2))
+
+    def test_live_cell_becomes_dead_after_toggle(self):
+        self.lattice.make_live(1, 2)
+        self.lattice.toggle_liveness(1, 2)
+        self.assertTrue(self.lattice.is_dead(1, 2))
