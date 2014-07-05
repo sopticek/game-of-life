@@ -9,6 +9,7 @@
 
 import unittest
 
+from life.lattice import OutOfBoundsError
 from life.lattice import Lattice
 
 
@@ -51,3 +52,34 @@ class LatticeLivenessTests(unittest.TestCase):
         self.lattice.make_live(1, 2)
         self.lattice.toggle_liveness(1, 2)
         self.assertTrue(self.lattice.is_dead(1, 2))
+
+
+class LatticeOutOfBoundsTests(unittest.TestCase):
+    def setUp(self):
+        self.lattice = Lattice(4)
+
+    def scenario_error_is_raised(self, method, x, y):
+        with self.assertRaises(OutOfBoundsError) as cm:
+            method(x, y)
+        self.assertRegex(str(cm.exception), r"^.*{}.*{}.*$".format(x, y))
+
+    def scenario_errors_are_raised(self, method):
+        self.scenario_error_is_raised(method, self.lattice.size, 0)
+        self.scenario_error_is_raised(method, 0, self.lattice.size)
+        self.scenario_error_is_raised(method, -1, 0)
+        self.scenario_error_is_raised(method, 0, -1)
+
+    def test_error_is_raised_is_live(self):
+        self.scenario_errors_are_raised(self.lattice.is_live)
+
+    def test_error_is_raised_is_dead(self):
+        self.scenario_errors_are_raised(self.lattice.is_dead)
+
+    def test_error_is_raised_make_live(self):
+        self.scenario_errors_are_raised(self.lattice.make_live)
+
+    def test_error_is_raised_make_dead(self):
+        self.scenario_errors_are_raised(self.lattice.make_dead)
+
+    def test_error_is_raised_toggle_liveness(self):
+        self.scenario_errors_are_raised(self.lattice.toggle_liveness)
