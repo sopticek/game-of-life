@@ -54,6 +54,10 @@ class LatticeFromStringCreationTests(unittest.TestCase):
         self.assertTrue(lattice.is_dead(2, 1))
         self.assertTrue(lattice.is_live(2, 2))
 
+    def test_creation_of_single_cell_lattice_succeeds(self):
+        lattice = Lattice.from_string("x")
+        self.assertTrue(lattice.is_live(0, 0))
+
     def test_creation_fails_when_string_contains_invalid_symbol(self):
         with self.assertRaises(InvalidSymbolError) as cm:
             Lattice.from_string("q\n")
