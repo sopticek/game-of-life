@@ -70,12 +70,12 @@ class Lattice:
             (x + 1, y + 1)
         ]
 
-        num_of_live_neighbours = 0
-        for neighbour in neighbours:
-            if self._is_valid_position(*neighbour):
-                if self.is_live(*neighbour):
-                    num_of_live_neighbours += 1
-        return num_of_live_neighbours
+        return len(list(filter(self._is_valid_neighbour_and_live,
+            neighbours)))
+
+    def _is_valid_neighbour_and_live(self, neighbour):
+        return (self._is_valid_position(*neighbour) and
+                self.is_live(*neighbour))
 
     def __eq__(self, other):
         return self._lattice == other._lattice
