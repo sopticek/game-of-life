@@ -37,3 +37,115 @@ class GameCreationTests(unittest.TestCase):
         self.assertTrue(game.is_live(0, 1))
         self.assertTrue(game.is_dead(1, 0))
         self.assertTrue(game.is_dead(1, 1))
+
+
+class GameMakeStepTests(unittest.TestCase):
+    def scenario_validate_make_step(self, original_game, expected_game):
+        original_game.make_step()
+        self.assertTrue(original_game == expected_game,
+            "\noriginal_game:\n{}expected_game:\n{}".format(
+            original_game, expected_game))
+
+    def test_live_cell_with_no_live_neighbours_dies(self):
+        game = Game.from_string(
+            "   \n"
+            " x \n"
+            "   \n"
+        )
+        expected_game = Game.from_string(
+            "   \n"
+            "   \n"
+            "   \n"
+        )
+        self.scenario_validate_make_step(game, expected_game)
+
+    def test_live_cell_with_one_live_neighbour_dies(self):
+        game = Game.from_string(
+            "   \n"
+            "xx \n"
+            "   \n"
+        )
+        expected_game = Game.from_string(
+            "   \n"
+            "   \n"
+            "   \n"
+        )
+        self.scenario_validate_make_step(game, expected_game)
+
+    def test_live_cell_with_two_live_neighbours_lives(self):
+        game = Game.from_string(
+            "x  \n"
+            " x \n"
+            "  x\n"
+        )
+        expected_game = Game.from_string(
+            "   \n"
+            " x \n"
+            "   \n"
+        )
+        self.scenario_validate_make_step(game, expected_game)
+
+    def test_live_cell_with_three_live_neighbours_lives(self):
+        game = Game.from_string(
+            "x x\n"
+            " x \n"
+            "  x\n"
+        )
+        expected_game = Game.from_string(
+            " x \n"
+            " xx\n"
+            "   \n"
+        )
+        self.scenario_validate_make_step(game, expected_game)
+
+    def test_live_cell_with_four_live_neighbours_dies(self):
+        game = Game.from_string(
+            "x x\n"
+            " x \n"
+            "x x\n"
+        )
+        expected_game = Game.from_string(
+            " x \n"
+            "x x\n"
+            " x \n"
+        )
+        self.scenario_validate_make_step(game, expected_game)
+
+    def test_live_cell_with_five_live_neighbours_dies(self):
+        game = Game.from_string(
+            "xxx\n"
+            " x \n"
+            "x x\n"
+        )
+        expected_game = Game.from_string(
+            "xxx\n"
+            "   \n"
+            " x \n"
+        )
+        self.scenario_validate_make_step(game, expected_game)
+
+    def test_live_cell_with_six_live_neighbours_dies(self):
+        game = Game.from_string(
+            "xxx\n"
+            " x \n"
+            "xxx\n"
+        )
+        expected_game = Game.from_string(
+            "xxx\n"
+            "   \n"
+            "xxx\n"
+        )
+        self.scenario_validate_make_step(game, expected_game)
+
+    def test_dead_cell_with_three_live_neighbours_lives(self):
+        game = Game.from_string(
+            " x \n"
+            "   \n"
+            "xx \n"
+        )
+        expected_game = Game.from_string(
+            "   \n"
+            "xx \n"
+            "   \n"
+        )
+        self.scenario_validate_make_step(game, expected_game)
