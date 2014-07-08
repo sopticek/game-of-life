@@ -136,3 +136,46 @@ class LatticeOutOfBoundsTests(unittest.TestCase):
 
     def test_error_is_raised_toggle_liveness(self):
         self.scenario_errors_are_raised(self.lattice.toggle_liveness)
+
+
+class LatticeComparisonTests(unittest.TestCase):
+    def test_two_lattices_with_same_data_are_equal(self):
+        lattice1 = Lattice.from_string(
+            "x x\n"
+            "xxx\n"
+            " x \n"
+        )
+        lattice2 = Lattice.from_string(
+            "x x\n"
+            "xxx\n"
+            " x \n"
+        )
+        self.assertEqual(lattice1, lattice2)
+        self.assertFalse(lattice1 != lattice2)
+
+    def test_two_lattices_with_different_data_are_not_equal(self):
+        lattice1 = Lattice.from_string(
+            "x x\n"
+            "xxx\n"
+            " x \n"
+        )
+        lattice2 = Lattice.from_string(
+            "x  \n"
+            " x \n"
+            "  x\n"
+        )
+        self.assertNotEqual(lattice1, lattice2)
+        self.assertFalse(lattice1 == lattice2)
+
+    def test_two_lattices_with_different_sizes_are_not_equal(self):
+        lattice1 = Lattice.from_string(
+            "x x\n"
+            "xxx\n"
+            " x \n"
+        )
+        lattice2 = Lattice.from_string(
+            "x \n"
+            " x\n"
+        )
+        self.assertNotEqual(lattice1, lattice2)
+        self.assertFalse(lattice1 == lattice2)

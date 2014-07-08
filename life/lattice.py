@@ -57,6 +57,12 @@ class Lattice:
     def toggle_liveness(self, x, y):
         self._set_cell(x, y, not self._get_cell(x, y))
 
+    def __eq__(self, other):
+        return self._lattice == other._lattice
+
+    def __ne__(self, other):
+        return not (self == other)
+
     def _get_cell(self, x, y):
         self._validate_position(x, y)
         return self._lattice[x][y]
