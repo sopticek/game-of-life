@@ -38,31 +38,6 @@ class Lattice:
         return Lattice._create_lattice_from_str_lattice(
             str_lattice, dead_symbol, live_symbol)
 
-    @staticmethod
-    def _input_str_to_str_lattice(str):
-        rows = str.rstrip('\n').split('\n')
-        return [list(row) for row in rows]
-
-    @staticmethod
-    def _validate_str_lattice_sizes(str_lattice):
-        expected_col_count = len(str_lattice)
-        for row in str_lattice:
-            if len(row) != expected_col_count:
-                raise InvalidSizeError
-
-    @staticmethod
-    def _create_lattice_from_str_lattice(str_lattice, dead_symbol, live_symbol):
-        lattice = Lattice(len(str_lattice))
-        for y, row in enumerate(str_lattice):
-            for x, symbol in enumerate(row):
-                if symbol == live_symbol:
-                    lattice.make_live(x, y)
-                elif symbol == dead_symbol:
-                    lattice.make_dead(x, y)
-                else:
-                    raise InvalidSymbolError(x, y, symbol)
-        return lattice
-
     @property
     def size(self):
         return self._size
@@ -97,3 +72,28 @@ class Lattice:
     def _validate_size(self, size):
         if size <= 0:
             raise InvalidSizeError(size)
+
+    @staticmethod
+    def _input_str_to_str_lattice(str):
+        rows = str.rstrip('\n').split('\n')
+        return [list(row) for row in rows]
+
+    @staticmethod
+    def _validate_str_lattice_sizes(str_lattice):
+        expected_col_count = len(str_lattice)
+        for row in str_lattice:
+            if len(row) != expected_col_count:
+                raise InvalidSizeError
+
+    @staticmethod
+    def _create_lattice_from_str_lattice(str_lattice, dead_symbol, live_symbol):
+        lattice = Lattice(len(str_lattice))
+        for y, row in enumerate(str_lattice):
+            for x, symbol in enumerate(row):
+                if symbol == live_symbol:
+                    lattice.make_live(x, y)
+                elif symbol == dead_symbol:
+                    lattice.make_dead(x, y)
+                else:
+                    raise InvalidSymbolError(x, y, symbol)
+        return lattice
