@@ -33,18 +33,27 @@ class Lattice:
 
     @staticmethod
     def from_string(str, dead_symbol=' ', live_symbol='x'):
-        rows = str.rstrip('\n').split('\n')
-        size = len(rows[0])
+        str_lattice = Lattice._input_str_to_str_lattice(str)
+        Lattice._validate_str_lattice_sizes(str_lattice)
+        return Lattice._create_lattice_from_str_lattice(
+            str_lattice, dead_symbol, live_symbol)
 
-        rows_count = len(rows)
-        if size != rows_count:
-            raise InvalidSizeError
-        for row in rows:
-            if size != len(row):
+    @staticmethod
+    def _input_str_to_str_lattice(str):
+        rows = str.rstrip('\n').split('\n')
+        return [list(row) for row in rows]
+
+    @staticmethod
+    def _validate_str_lattice_sizes(str_lattice):
+        expected_col_count = len(str_lattice)
+        for row in str_lattice:
+            if len(row) != expected_col_count:
                 raise InvalidSizeError
 
-        lattice = Lattice(size)
-        for y, row in enumerate(rows):
+    @staticmethod
+    def _create_lattice_from_str_lattice(str_lattice, dead_symbol, live_symbol):
+        lattice = Lattice(len(str_lattice))
+        for y, row in enumerate(str_lattice):
             for x, symbol in enumerate(row):
                 if symbol == live_symbol:
                     lattice.make_live(x, y)
