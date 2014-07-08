@@ -94,8 +94,8 @@ class Lattice:
     @staticmethod
     def _create_lattice_from_str_lattice(str_lattice, dead_symbol, live_symbol):
         lattice = Lattice(len(str_lattice))
-        for y, row in enumerate(str_lattice):
-            for x, symbol in enumerate(row):
+        for x, row in enumerate(str_lattice):
+            for y, symbol in enumerate(row):
                 if symbol == live_symbol:
                     lattice.make_live(x, y)
                 elif symbol == dead_symbol:

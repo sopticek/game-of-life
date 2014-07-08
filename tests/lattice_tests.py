@@ -37,7 +37,7 @@ class LatticeCreationTests(unittest.TestCase):
 
 
 class LatticeFromStringCreationTests(unittest.TestCase):
-    def test_valid_string(self):
+    def test_creation_of_symmetrical_lattice_from_valid_string(self):
         lattice = Lattice.from_string(
             "x x\n"
             " x \n"
@@ -53,6 +53,16 @@ class LatticeFromStringCreationTests(unittest.TestCase):
         self.assertTrue(lattice.is_live(2, 0))
         self.assertTrue(lattice.is_dead(2, 1))
         self.assertTrue(lattice.is_live(2, 2))
+
+    def test_creation_of_asymmetrical_lattice_from_string(self):
+        lattice = Lattice.from_string(
+            "xx\n"
+            "  \n"
+        )
+        self.assertTrue(lattice.is_live(0, 0))
+        self.assertTrue(lattice.is_live(0, 1))
+        self.assertTrue(lattice.is_dead(1, 0))
+        self.assertTrue(lattice.is_dead(1, 1))
 
     def test_creation_of_single_cell_lattice_succeeds(self):
         lattice = Lattice.from_string("x")
