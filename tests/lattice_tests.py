@@ -193,3 +193,13 @@ class LatticeComparisonTests(unittest.TestCase):
         )
         self.assertNotEqual(lattice1, lattice2)
         self.assertFalse(lattice1 == lattice2)
+
+class LatticeReprTests(unittest.TestCase):
+    def test_repr_returns_correct_result(self):
+        lattice = Lattice.from_string(
+            "x x\n"
+            "xxx\n"
+            " x \n"
+        )
+        lattice_str = repr(lattice)
+        self.assertEqual(lattice, Lattice.from_string(lattice_str))

@@ -63,6 +63,17 @@ class Lattice:
     def __ne__(self, other):
         return not (self == other)
 
+    def __repr__(self):
+        result = ''
+        for x in range(self.size):
+            for y in range(self.size):
+                result += self._get_cell_repr(x, y)
+            result += '\n'
+        return result
+
+    def _get_cell_repr(self, x, y):
+        return 'x' if self.is_live(x, y) else ' '
+
     def _get_cell(self, x, y):
         self._validate_position(x, y)
         return self._lattice[x][y]
