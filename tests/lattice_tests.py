@@ -203,3 +203,30 @@ class LatticeReprTests(unittest.TestCase):
         )
         lattice_str = repr(lattice)
         self.assertEqual(lattice, Lattice.from_string(lattice_str))
+
+
+class LatticeGetNumOfLiveNeighboursTests(unittest.TestCase):
+    def test_no_live_neighbour(self):
+        lattice = Lattice.from_string(
+            "   \n"
+            " x \n"
+            "   \n"
+        )
+        self.assertEqual(lattice.get_num_of_live_neighbours(1, 1), 0)
+
+    def test_all_neighbours_are_live(self):
+        lattice = Lattice.from_string(
+            "xxx\n"
+            "xxx\n"
+            "xxx\n"
+        )
+        self.assertEqual(lattice.get_num_of_live_neighbours(1, 1), 8)
+
+    def test_no_neighbours(self):
+        lattice = Lattice.from_string("x")
+        self.assertEqual(lattice.get_num_of_live_neighbours(0, 0), 0)
+
+    def test_out_of_bounds_error_is_raised_on_invalid_position(self):
+        lattice = Lattice.from_string("x")
+        with self.assertRaises(OutOfBoundsError):
+            lattice.get_num_of_live_neighbours(1, 1)

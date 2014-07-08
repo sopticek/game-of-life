@@ -57,6 +57,26 @@ class Lattice:
     def toggle_liveness(self, x, y):
         self._set_cell(x, y, not self._get_cell(x, y))
 
+    def get_num_of_live_neighbours(self, x, y):
+        self._validate_position(x, y)
+        neighbours = [
+            (x - 1, y - 1),
+            (x - 1, y    ),
+            (x - 1, y + 1),
+            (x    , y - 1),
+            (x    , y + 1),
+            (x + 1, y - 1),
+            (x + 1, y    ),
+            (x + 1, y + 1)
+        ]
+
+        num_of_live_neighbours = 0
+        for neighbour in neighbours:
+            if self._is_valid_position(*neighbour):
+                if self.is_live(*neighbour):
+                    num_of_live_neighbours += 1
+        return num_of_live_neighbours
+
     def __eq__(self, other):
         return self._lattice == other._lattice
 
@@ -83,12 +103,15 @@ class Lattice:
         self._lattice[x][y] = live
 
     def _validate_position(self, x, y):
-        if not (0 <= x < self.size) or not (0 <= y < self.size):
+        if not self._is_valid_position(x, y):
             raise OutOfBoundsError(x, y)
 
     def _validate_size(self, size):
         if size <= 0:
             raise InvalidSizeError(size)
+
+    def _is_valid_position(self, x, y):
+        return (0 <= x < self.size) and (0 <= y < self.size)
 
     @staticmethod
     def _input_str_to_str_lattice(str):
