@@ -185,3 +185,15 @@ class GameDelegationTests(unittest.TestCase):
         with self.assertRaises(AttributeError) as cm:
             self.game.nonexisting
         self.assertRegex(str(cm.exception), r"^.*Game.*$")
+
+
+class GameComparisonTests(unittest.TestCase):
+    def test_two_games_with_equal_lattices_are_equal(self):
+        game1 = Game.from_string("x")
+        game2 = Game.from_string("x")
+        self.assertEqual(game1, game2)
+
+    def test_two_games_with_different_lattices_are_not_equal(self):
+        game1 = Game.from_string(" ")
+        game2 = Game.from_string("x")
+        self.assertNotEqual(game1, game2)
