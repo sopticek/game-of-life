@@ -1,0 +1,54 @@
+# Game of Life #
+
+Implementation of the [Conway's Game of Life](http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) in Python.
+
+## Usage ##
+
+1. Clone this repository.
+2. Run `game-of-life.py FILE`, where `FILE` is the input game.
+3. The script periodically prints the game and updates it.
+
+A game is a text file containing a rectangular lattice, where `x` denotes a live cell and ` ` (space) denotes a dead cell.
+
+Example:
+                     
+                     
+        xxx   xxx    
+                     
+      x    x x    x  
+      x    x x    x  
+      x    x x    x  
+        xxx   xxx    
+                     
+        xxx   xxx    
+      x    x x    x  
+      x    x x    x  
+      x    x x    x  
+                     
+        xxx   xxx    
+                     
+                     
+
+Note that there have to be spaces for every dead cell, even at the end of lines. For more examples, see the `games` directory.
+
+# Testing #
+The script's code is covered by unit tests. To execute them, simply run `make test`. It will run the tests by using [nosetests](https://nose.readthedocs.org/en/latest/), so make sure you have it installed.
+
+If you want to generate code coverage, run `make test-coverage` and open `coverage/index.html` in your favorite web browser. Once again, you need to have [nosetests](https://nose.readthedocs.org/en/latest/) installed.
+
+## Copyright and License ##
+
+Copyright 2014 Daniela Duricekova <daniela.duricekova@gmail.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
