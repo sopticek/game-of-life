@@ -25,12 +25,6 @@ class Game:
     def size(self):
         return self._lattice.size
 
-    def is_dead(self, x, y):
-        return self._lattice.is_dead(x, y)
-
-    def is_live(self, x, y):
-        return self._lattice.is_live(x, y)
-
     def make_step(self):
         new_lattice = Lattice(self.size)
         for x in range(self.size):
@@ -61,3 +55,9 @@ class Game:
 
     def __repr__(self):
        return repr(self._lattice)
+
+    def __getattr__(self, name):
+        try:
+            return getattr(self._lattice, name)
+        except AttributeError as e:
+            raise AttributeError(str(e).replace('Lattice', 'Game', 1)) from e

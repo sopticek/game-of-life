@@ -149,3 +149,39 @@ class GameMakeStepTests(unittest.TestCase):
             "   \n"
         )
         self.scenario_validate_make_step(game, expected_game)
+
+class GameDelegationTests(unittest.TestCase):
+    def setUp(self):
+        self.game = Game.from_string(
+            " x \n"
+            "   \n"
+            "xx \n"
+        )
+
+    def test_size_is_delegated_to_lattice(self):
+        self.assertEqual(self.game.size, 3)
+
+    def test_is_dead_is_delegated_to_lattice(self):
+        self.assertTrue(self.game.is_dead(0, 0))
+
+    def test_is_live_is_delegated_to_lattice(self):
+        self.assertTrue(self.game.is_live(0, 1))
+
+    def test_make_dead_is_delegated_to_lattice(self):
+        self.game.make_dead(0, 1)
+        self.assertTrue(self.game.is_dead(0, 1))
+
+    def test_make_live_is_delegated_to_lattice(self):
+        self.game.make_live(0, 0)
+        self.assertTrue(self.game.is_live(0, 0))
+
+    def test_toggle_liveness_is_delegated_to_lattice(self):
+        self.game.toggle_liveness(0, 0)
+        self.assertTrue(self.game.is_live(0, 0))
+        self.game.toggle_liveness(0, 0)
+        self.assertTrue(self.game.is_dead(0, 0))
+
+    def test_lattice_does_not_appear_in_attribute_error_messages(self):
+        with self.assertRaises(AttributeError) as cm:
+            self.game.nonexisting
+        self.assertRegex(str(cm.exception), r"^.*Game.*$")
