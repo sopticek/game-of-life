@@ -34,6 +34,10 @@ class Lattice:
     @staticmethod
     def from_string(str, dead_symbol=' ', live_symbol='x'):
         str_lattice = Lattice._input_str_to_str_lattice(str)
+        # Do not require the presence of trailing spaces as dead symbols.
+        if dead_symbol == ' ':
+            str_lattice = Lattice._add_missing_dead_cells(
+                str_lattice, dead_symbol)
         Lattice._validate_str_lattice_sizes(str_lattice)
         return Lattice._create_lattice_from_str_lattice(
             str_lattice, dead_symbol, live_symbol)
@@ -115,8 +119,22 @@ class Lattice:
 
     @staticmethod
     def _input_str_to_str_lattice(str):
-        rows = str.rstrip('\n').split('\n')
+        if str and str[-1] == '\n':
+            str = str[:-1]
+        rows = str.split('\n')
         return [list(row) for row in rows]
+
+    @staticmethod
+    def _add_missing_dead_cells(str_lattice, dead_symbol):
+        max_cols = Lattice._get_max_cols_from_str_lattice(str_lattice)
+        for row in str_lattice:
+            num_of_missing_dead_cells = max_cols - len(row)
+            row.extend(dead_symbol * num_of_missing_dead_cells)
+        return str_lattice
+
+    @staticmethod
+    def _get_max_cols_from_str_lattice(str_lattice):
+        return max(len(row) for row in str_lattice)
 
     @staticmethod
     def _validate_str_lattice_sizes(str_lattice):

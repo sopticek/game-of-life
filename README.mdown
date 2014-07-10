@@ -11,25 +11,25 @@ Implementation of the [Conway's Game of Life](http://en.wikipedia.org/wiki/Conwa
 A game is a text file containing a rectangular lattice, where `x` denotes a live cell and ` ` (space) denotes a dead cell.
 
 Example:
-                     
-                     
-        xxx   xxx    
-                     
-      x    x x    x  
-      x    x x    x  
-      x    x x    x  
-        xxx   xxx    
-                     
-        xxx   xxx    
-      x    x x    x  
-      x    x x    x  
-      x    x x    x  
-                     
-        xxx   xxx    
-                     
-                     
 
-Note that there have to be spaces for every dead cell, even at the end of lines. For more examples, see the `games` directory.
+
+        xxx   xxx
+
+      x    x x    x
+      x    x x    x
+      x    x x    x
+        xxx   xxx
+
+        xxx   xxx
+      x    x x    x
+      x    x x    x
+      x    x x    x
+
+        xxx   xxx
+
+
+
+For more examples, see the `games` directory.
 
 # Testing #
 The script's code is covered by unit tests. To execute them, simply run `make test`. It will run the tests by using [nosetests](https://nose.readthedocs.org/en/latest/), so make sure you have it installed.

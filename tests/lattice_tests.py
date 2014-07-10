@@ -68,6 +68,42 @@ class LatticeFromStringCreationTests(unittest.TestCase):
         lattice = Lattice.from_string("x")
         self.assertTrue(lattice.is_live(0, 0))
 
+    def test_creation_of_lattice_without_trailing_spaces_succeeds(self):
+        lattice1 = Lattice.from_string(
+            "x x\n"
+            "\n"
+            "xx\n"
+        )
+        lattice2 = Lattice.from_string(
+            "x x\n"
+            "   \n"
+            "xx \n"
+        )
+        self.assertEqual(lattice1, lattice2)
+
+    def test_creation_of_lattice_with_trailing_new_lines_succeeds(self):
+        lattice1 = Lattice.from_string(
+            "x x\n"
+            "\n"
+            "\n"
+        )
+        lattice2 = Lattice.from_string(
+            "x x\n"
+            "   \n"
+            "   \n"
+        )
+        self.assertEqual(lattice1, lattice2)
+
+    def test_creation_of_lattice_from_game1_succeeds(self):
+        lattice1 = Lattice.from_string(
+            "     \n"
+            "     \n"
+            " xxx \n"
+            "     \n"
+            "     \n"
+        )
+        self.assertEqual(lattice1.size, 5)
+
     def test_creation_fails_when_string_contains_invalid_symbol(self):
         with self.assertRaises(InvalidSymbolError) as cm:
             Lattice.from_string("q\n")
@@ -85,9 +121,10 @@ class LatticeFromStringCreationTests(unittest.TestCase):
     def test_creation_fails_on_columns_count_mismatch(self):
         with self.assertRaises(InvalidSizeError) as cm:
             Lattice.from_string(
-                "x x\n"
+                "x_x\n"
                 "xxx\n"
-                "xx\n"
+                "xx\n",
+                dead_symbol="_"
             )
 
 
